@@ -2,6 +2,7 @@ package de.imedia24.shop.controller
 
 import de.imedia24.shop.domain.product.ProductRequest
 import de.imedia24.shop.domain.product.ProductResponse
+import de.imedia24.shop.domain.product.ProductUpdateRequest
 import de.imedia24.shop.service.ProductService
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
@@ -50,5 +51,20 @@ class ProductController(private val productService: ProductService) {
 
         val createdProduct = productService.createProduct(productRequest)
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct)
+    }
+
+    @PatchMapping("/products/{sku}", consumes = ["application/json"], produces = ["application/json;charset=utf-8"])
+    fun updateProduct(
+            @PathVariable("sku") sku: String,
+            @RequestBody updateRequest: ProductUpdateRequest
+    ): ResponseEntity<ProductResponse> {
+        logger.info("Updating product with SKU: $sku")
+
+        val updatedProduct = productService.updateProduct(sku, updateRequest)
+        return if (updatedProduct == null) {
+            ResponseEntity.notFound().build()
+        } else {
+            ResponseEntity.ok(updatedProduct)
+        }
     }
 }

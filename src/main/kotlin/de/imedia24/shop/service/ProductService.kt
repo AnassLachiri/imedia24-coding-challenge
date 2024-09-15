@@ -5,6 +5,7 @@ import de.imedia24.shop.db.repository.ProductRepository
 import de.imedia24.shop.domain.product.ProductRequest
 import de.imedia24.shop.domain.product.ProductResponse
 import de.imedia24.shop.domain.product.ProductResponse.Companion.toProductResponse
+import de.imedia24.shop.domain.product.ProductUpdateRequest
 import org.springframework.stereotype.Service
 import java.time.ZonedDateTime
 
@@ -34,5 +35,19 @@ class ProductService(private val productRepository: ProductRepository) {
         val savedProduct = productRepository.save(productEntity)
 
         return savedProduct.toProductResponse()
+    }
+
+    fun updateProduct(sku: String, updateRequest: ProductUpdateRequest): ProductResponse? {
+        val existingProduct = productRepository.findBySku(sku) ?: return null
+
+        updateRequest.name?.let { existingProduct.name = it }
+        updateRequest.description?.let { existingProduct.description = it }
+        updateRequest.price?.let { existingProduct.price = it }
+
+        existingProduct.updatedAt = ZonedDateTime.now()
+
+        val updatedProduct = productRepository.save(existingProduct)
+
+        return updatedProduct.toProductResponse()
     }
 }
