@@ -24,6 +24,9 @@ class ProductEntity {
     @Column(name = "price", nullable = false)
     lateinit var price: BigDecimal;
 
+    @Column(name = "stock", nullable = false)
+    var stock: Int = 0;
+
     @UpdateTimestamp
     @Column(name = "created_at", nullable = false)
     lateinit var createdAt: ZonedDateTime;
