@@ -10,25 +10,25 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "products")
-data class ProductEntity(
+class ProductEntity {
     @Id
     @Column(name = "sku", nullable = false)
-    val sku: String,
+    lateinit var sku: String;
 
     @Column(name = "name", nullable = false)
-    val name: String,
+    lateinit var name: String;
 
     @Column(name = "description")
-    val description: String? = null,
+    var description: String? = null;
 
     @Column(name = "price", nullable = false)
-    val price: BigDecimal,
+    lateinit var price: BigDecimal;
 
     @UpdateTimestamp
     @Column(name = "created_at", nullable = false)
-    val createdAt: ZonedDateTime,
+    lateinit var createdAt: ZonedDateTime;
 
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
-    val updatedAt: ZonedDateTime
-)
+    lateinit var updatedAt: ZonedDateTime;
+}
