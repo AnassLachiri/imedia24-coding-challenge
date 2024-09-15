@@ -11,4 +11,9 @@ class ProductService(private val productRepository: ProductRepository) {
     fun findProductBySku(sku: String): ProductResponse? {
         return productRepository.findBySku(sku)?.toProductResponse();
     }
+
+    fun findProductsBySkus(skus: List<String>): List<ProductResponse> {
+        val productEntities = productRepository.findBySkuIn(skus)
+        return productEntities.map { it.toProductResponse() }
+    }
 }
