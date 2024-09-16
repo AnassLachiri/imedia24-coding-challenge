@@ -36,7 +36,19 @@ dependencies {
 	implementation("com.h2database:h2:1.4.200")
 
 
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.boot:spring-boot-starter-test") {
+		exclude(module = "mockito-core")
+	}
+	// Mockito core
+	testImplementation("org.mockito:mockito-core:3.11.2")
+
+	// Mockito inline for mocking final classes (optional, but recommended)
+	testImplementation("org.mockito:mockito-inline:3.11.2")
+
+	// Mockito-Kotlin extension library
+	testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
+
+
 }
 
 tasks.withType<KotlinCompile> {
