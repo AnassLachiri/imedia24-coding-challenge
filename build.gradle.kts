@@ -49,6 +49,8 @@ dependencies {
 	testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
 
 
+	implementation("org.springdoc:springdoc-openapi-ui:1.5.9")
+
 }
 
 tasks.withType<KotlinCompile> {

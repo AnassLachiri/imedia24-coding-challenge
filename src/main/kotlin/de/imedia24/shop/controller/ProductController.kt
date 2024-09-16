@@ -4,6 +4,9 @@ import de.imedia24.shop.domain.product.ProductRequest
 import de.imedia24.shop.domain.product.ProductResponse
 import de.imedia24.shop.domain.product.ProductUpdateRequest
 import de.imedia24.shop.service.ProductService
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -15,6 +18,11 @@ class ProductController(private val productService: ProductService) {
 
     private val logger = LoggerFactory.getLogger(ProductController::class.java)!!
 
+    @Operation(summary = "Get product by SKU", description = "Fetch a product by its SKU")
+    @ApiResponses(value = [
+        ApiResponse(responseCode = "200", description = "Successful retrieval of product"),
+        ApiResponse(responseCode = "404", description = "Product not found")
+    ])
     @GetMapping("/products/{sku}", produces = ["application/json;charset=utf-8"])
     fun findProductsBySku(
         @PathVariable("sku") sku: String
@@ -29,6 +37,11 @@ class ProductController(private val productService: ProductService) {
         }
     }
 
+    @Operation(summary = "Get products by list of SKUs", description = "Fetch multiple products by their SKUs")
+    @ApiResponses(value = [
+        ApiResponse(responseCode = "200", description = "Successful retrieval of products"),
+        ApiResponse(responseCode = "404", description = "Products not found")
+    ])
     @GetMapping("/products", produces = ["application/json;charset=utf-8"])
     fun findProductsBySkus(
             @RequestParam("skus") skus: List<String>
@@ -43,6 +56,11 @@ class ProductController(private val productService: ProductService) {
         }
     }
 
+    @Operation(summary = "Create a new product", description = "Create a new product with the provided details")
+    @ApiResponses(value = [
+        ApiResponse(responseCode = "201", description = "Product created successfully"),
+        ApiResponse(responseCode = "400", description = "Invalid product data")
+    ])
     @PostMapping("/products", consumes = ["application/json"], produces = ["application/json;charset=utf-8"])
     fun createProduct(
             @RequestBody productRequest: ProductRequest
@@ -53,6 +71,11 @@ class ProductController(private val productService: ProductService) {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct)
     }
 
+    @Operation(summary = "Update product details", description = "Partially update a product by SKU")
+    @ApiResponses(value = [
+        ApiResponse(responseCode = "200", description = "Product updated successfully"),
+        ApiResponse(responseCode = "404", description = "Product not found")
+    ])
     @PatchMapping("/products/{sku}", consumes = ["application/json"], produces = ["application/json;charset=utf-8"])
     fun updateProduct(
             @PathVariable("sku") sku: String,
